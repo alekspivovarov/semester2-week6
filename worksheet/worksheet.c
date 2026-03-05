@@ -1,3 +1,4 @@
+// Aleksandr Pivovarov (202029245)
 /**
  * Week 6 Worksheet - Functions Practice
  *
@@ -48,8 +49,7 @@ int find_max(int *arr, int n, int *index);
  * Example: add_values(3, 4) returns 7
  */
 int add_values(int a, int b) {
-  // TODO: Implement this function
-  return 0; // Replace this
+  return a + b;
 }
 
 /**
@@ -70,6 +70,9 @@ int add_values(int a, int b) {
 void swap_values(int *a, int *b) {
   // TODO: Implement this function
   // Hint: You'll need a temporary variable
+  int tmp = *a;
+  *a = *b;
+  *b = tmp;
 }
 
 /**
@@ -85,9 +88,14 @@ void swap_values(int *a, int *b) {
  * Example: sum_array([1,2,3,4,5], 5) returns 15
  */
 int sum_array(int *arr, int n) {
-  // TODO: Implement this function
-  return 0; // Replace this
+  int sum = 0;
+  for (int i = 0; i < n; i++) {
+    sum += arr[i];
+  }
+  return sum; // Replace this
 }
+
+
 
 /**
  * Function 4: reverse_array
@@ -106,7 +114,11 @@ int sum_array(int *arr, int n) {
  * Hint: Swap elements from both ends, moving toward the middle
  */
 void reverse_array(int *arr, int n) {
-  // TODO: Implement this function
+  for (int i = 0; i < n / 2; i++) { // we stop at the middle
+    int tmp = arr[i];
+    arr[i] = arr[n - 1 - i];
+    arr[n - 1 - i] = tmp;
+  }
 }
 
 /**
@@ -125,7 +137,11 @@ void reverse_array(int *arr, int n) {
 double average(int *arr, int n) {
   // TODO: Implement this function
   // Hint: Be careful with integer division!
-  return 0.0; // Replace this
+  int sum = 0;
+  for (int i = 0; i < n; i++) {
+    sum += arr[i];
+  }
+  return (double)sum / n;
 }
 
 /**
@@ -148,8 +164,15 @@ double average(int *arr, int n) {
  */
 int find_max(int *arr, int n, int *index) {
   // TODO: Implement this function
-  *index = 0;
-  return 0; // Replace this
+  int current_max = arr[0];
+
+  for (int i = 0; i < n; i++) {
+    if (arr[i] > current_max) {
+      current_max = arr[i];
+      *index = i; 
+    }
+  }
+    return current_max;
 }
 
 /* ============================================================
