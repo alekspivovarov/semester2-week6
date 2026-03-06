@@ -165,8 +165,9 @@ double average(int *arr, int n) {
 int find_max(int *arr, int n, int *index) {
   // TODO: Implement this function
   int current_max = arr[0];
+  *index = 0;
 
-  for (int i = 0; i < n; i++) {
+  for (int i = 1; i < n; i++) {
     if (arr[i] > current_max) {
       current_max = arr[i];
       *index = i; 
@@ -284,6 +285,9 @@ void test_find_max(void) {
   TEST_CHECK(max1 == 9 && idx1 == 3);
   TEST_MSG("Expected find_max([3,7,2,9,4]) = 9 at index 3, got %d at %d", max1,
            idx1);
+
+
+
 
   int arr2[] = {100};
   int idx2;
