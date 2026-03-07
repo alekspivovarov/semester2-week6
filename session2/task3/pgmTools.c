@@ -1,33 +1,35 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int getUserInput(unsigned char *message);
+//function prototypes (telling the compiler these functions exist before main)
+int getUserInput(char *message);
 void menu(void);
 unsigned char **allocateArray(int height, int width);
-unsigned char **read(unsigned char *fn, int *a, int *b);
-void printImage(unsigned char **p, int a, int b);
+unsigned char **readPGM(char *fn, int *a, int *b);
+void printImage(unsigned char **image, int a, int b);
 
-int main(int argc, unsigned char **argv) {
-  if (argc != 2) {
+
+int main(int argc, char **argv) { // argc = number of arguments, argv = the arguments themseleves
+  if (argc != 2) {  // program expects exactly 2 args: ./pgmTools and a filename
     printf("Usage: ./pgmTools image_path\n");
-    return 0;
+    return 0;       // exit if number of arguments is wrong
   }
 
-  int a, b;
-  unsigned char **i;
-  i = read(argv[1], &a, &b);
+  int height, width, maxGray; // will store image height and width
+  unsigned char **image;  //2D array to store pixel values
+  image = readPGM(argv[1], &height, &width);  // read the image, fill a and b
 
-  int c = -1;
+  int choice = -1;   // store the user's choice, -1 = no choice yet
 
   do {
-    c = -1;
-    menu();
-    while (c < 1)
-      c = getUserInput("Enter choice");
+    choice = -1;   // reset choice each loop iteration
+    menu();   // print the menu options
+    while (choice < 1) // keep asking until valid input (>=1)
+      choice = getUserInput("Enter choice");
 
-    switch (c) {
+    switch (choice) { //
     case 1:
-      printImage(i, a, b);
+      printImage(image, height, width); //
       break;
     case 2:
       break;
@@ -36,15 +38,15 @@ int main(int argc, unsigned char **argv) {
     case 4:
       break;
     case 5:
-      return 0;
+      return 0; // quit the program
     default:
-      printf("Bad choice\n");
+      printf("Bad choice\n"); //everything else is invalid
       break;
     }
   } while (1);
 }
 
-int getUserInput(unsigned char *message) {
+int getUserInput(char *message) {
   unsigned char buffer[100];
   int choice;
   printf("%s: ", message);
@@ -73,29 +75,29 @@ unsigned char **allocateArray(int height, int width) {
   return array;
 }
 
-unsigned char **read(unsigned char *fn, int *a, int *b) {
-  unsigned char temp[10];
-  int h, w;
-  FILE *f = fopen(fn, "r");
-  fscanf(f, "%s ", temp);
-  fscanf(f, "%d %d", &h, &w);
-  fscanf(f, "%s ", temp);
-  unsigned char **p = allocateArray(h, w);
-  for (int i = 0; i < h; i++) {
-    for (int j = 0; j < w; j++) {
-      fscanf(f, "%hhd", &p[i][j]);
+unsigned char **readPGM(char *filename, int *a, int *b) {
+  unsigned char magicNumber[10]; // temporary buffer to read and discard strings
+  int height, width, maxGray; // image heigth and width from file header
+  FILE *file = fopen(filename, "r");  // open the image file for reading
+  fscanf(file, "%s ", magicNumber);
+  fscanf(file, "%d %d", &height, &width);
+  fscanf(file, "%d", &maxGray);
+  unsigned char **image = allocateArray(height, width); //allocate the 2d pixel array
+  for (int i = 0; i < height; i++) {
+    for (int j = 0; j < width; j++) {
+      fscanf(file, "%hhd", &image[i][j]);
     }
   }
-  *a = h;
-  *b = w;
-  return p;
+  *a = height;
+  *b = width;
+  return image;
 }
 
-void printImage(unsigned char **p, int a, int b) {
-  for (int i = 0; i < a; i++) {
-    for (int j = 0; j < b; j++) {
-      printf("%d%s", p[i][j],
-             (p[i][j] < 100) ? (p[i][j] < 10) ? "   " : "  " : " ");
+void printImage(unsigned char **image, int height, int width) {
+  for (int i = 0; i < height; i++) {
+    for (int j = 0; j < width; j++) {
+      printf("%d%s", image[i][j],
+             (image[i][j] < 100) ? (image[i][j] < 10) ? "   " : "  " : " ");
     }
     printf("\n");
   }

@@ -7,6 +7,13 @@ int is_palindrome(const char *str);
 int main(void) {
   // Use 'assert' to write some tests - does the function work?
   // consider what is and is not a palindrome!
+  assert(is_palindrome("madam") == 1);
+assert(is_palindrome("a") == 1);
+assert(is_palindrome("racecar") == 1);
+assert(is_palindrome("Racecar") == 0);
+assert(is_palindrome("Hello") == 0);
+assert(is_palindrome("z z") == 1);
+printf("All tests passed");
   return 0;
 }
 
@@ -25,3 +32,6 @@ int is_palindrome(const char *str) {
   }
   return 1;
 }
+
+
+
